@@ -71,6 +71,7 @@ void setShipInfo(ShipInfo * shipInfoPtr, Ship name, Direction orientation,
 // Description:
 //		allocates memory for current grids
 // Programmer:	Paul Bladek
+//				
 // modified by:	
 // 
 // Date:	9/13/06
@@ -110,12 +111,19 @@ void allocMem(Player players[], char size)
 			players[i].m_gameGrid[1] = new Ship*[numberOfRows];
 			for(short j = 0; j < numberOfRows; ++j)
 			{
+		/*		if (j == 7)
+				{							testing purposes if we need it
+					throw bad_alloc();
+				}*/
 			//-------------------------------------------------
+				players[i].m_gameGrid[0][j] = nullptr;
+				players[i].m_gameGrid[0][j] = new Ship[numberOfCols];
+				players[i].m_gameGrid[1][j] = nullptr;
+				players[i].m_gameGrid[1][j] = new Ship[numberOfCols];
+
 			//	your code goes here ...
 			// set the pointers to NULL, then allocate the
 			// memory for each row in each grid
-
-
 			//--------------------------------------------------
 				for(short k = 0; k < numberOfCols; ++k)
 				{
@@ -609,6 +617,8 @@ bool validLocation(const Player& player, short shipNumber, char size)
 // Description:
 //		Prints opening graphic
 // Programmer:	Paul Bladek
+//				Lael Smith
+//				Anthony Waddell
 // 
 // Date:	9/12/06
 //
@@ -632,17 +642,21 @@ bool validLocation(const Player& player, short shipNumber, char size)
 //
 // History Log: 
 //		9/12/06 PB comleted v 1.0
+//		1/10/17 AW LS updated boxline v 1.1
 //     
 //---------------------------------------------------------------------------------
 void header(ostream& sout)
 {
 	const string empty;
 	const string sink("SINK THE FLEET!");
-	// your name goes here!
+	const string names("By DeathRule");
 	const string by("Edmonds Community College CS 132");
 	boxTop(sout, BOXWIDTH);
 	boxLine(sout, empty, BOXWIDTH);
 	boxLine(sout, sink , BOXWIDTH, 'C');
+	boxLine(sout, empty, BOXWIDTH);
+	boxLine(sout, names, BOXWIDTH);
+	boxLine(sout, empty, BOXWIDTH);
 	boxLine(sout, empty, BOXWIDTH);
 	boxLine(sout, by, BOXWIDTH, 'C');
 	boxLine(sout, empty, BOXWIDTH);
