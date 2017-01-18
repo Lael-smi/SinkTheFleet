@@ -58,6 +58,7 @@ int main(void)
 	short numCols = SMALLCOLS;			// total number of columns in the array
 	char again = 'N';
 	char gridSize = 'S';
+	char readFromFile = 'N';
 	short whichPlayer = 0;
 	bool gameOver = false;
 	bool reshot = false;
@@ -89,11 +90,14 @@ int main(void)
 		initializePlayer(game + 1);
 		// dynamically create the rows of the array
 		allocMem(game, gridSize);
-		// ... your code goes here
 		for(whichPlayer = 0; whichPlayer < NUMPLAYERS; whichPlayer++)
 		{
 			// enter grid files or let users enter ships
-
+			cout << "Player " << (whichPlayer + 1) << ", ";
+			readFromFile = safeChoice("Would you like to read starting grid from a file?", 'Y', 'N');
+			system("cls");
+			printGrid(cout, game[whichPlayer].m_gameGrid[0], gridSize);
+			setships(game, gridSize, whichPlayer);
 		}
 		whichPlayer = 0;
 		while(!gameOver)

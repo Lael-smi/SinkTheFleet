@@ -62,6 +62,19 @@ const int TOTALPIECES = 17; // total pieces in all ships
 void setShipInfo(ShipInfo * shipInfoPtr, Ship name, Direction orientation,
 	unsigned short row, unsigned short col)
 {
+	shipInfoPtr->m_orientation = orientation;
+	shipInfoPtr->m_name = name;
+	shipInfoPtr->m_bowLocation.m_row = row;
+	shipInfoPtr->m_bowLocation.m_col = col;
+
+
+	//struct ShipInfo
+	//{
+	//	Ship m_name;			// which ship?
+	//	Direction m_orientation;// which direction is the ship facing? 
+	//	Cell m_bowLocation;		// which cell is the bow location?
+	//	short m_piecesLeft;		// how many sections are left undestroyed?
+	//};
 
 }
 
@@ -276,10 +289,27 @@ void printGrid(ostream& sout, Ship** grid, char size)
 {
 	short numberOfRows = (toupper(size) == 'L') ? LARGEROWS : SMALLROWS;
 	short numberOfCols = (toupper(size) == 'L') ? LARGECOLS : SMALLCOLS;
-
+	char c = 'A';
+	sout << "  ";
 	for(short j = 1; j <= numberOfCols; ++j)
 		sout << setw(3) << j;
 	sout  << endl;
+
+	for (int i = 0; i < numberOfRows; i++)
+	{
+		sout << left << c;
+		for (int j = 0; j < numberOfCols; j++)
+		{
+			printShip(sout, grid[i][j]);
+		} 
+		c += 1;
+		sout << endl << HORIZ;
+		for (int k = 0; k < numberOfCols; k++)
+		{
+			sout << HORIZ << HORIZ << CR;
+		}
+		sout << endl;
+	}
 	// your code goes here ...
 	// use printShip for each element in the grid
 }
@@ -376,7 +406,7 @@ void setships(Player players[], char size, short whichPlayer)
 		cout << "Player " << whichPlayer + 1 << " Enter " << shipNames[j] <<
 			" bow coordinates <row letter><col #>: ";
 		players[whichPlayer].m_ships[j].m_bowLocation = getCoord(cin, size);
-
+		
 		// if ok
 		if (!validLocation(players[whichPlayer], j, size))
 		{
@@ -385,8 +415,9 @@ void setships(Player players[], char size, short whichPlayer)
 			j--; // redo
 			continue;
 		}
+		
 		// your code goes here ...
-
+		players[whichPlayer].m_ships[j].m_name = (Ship)j;
 
 
 
