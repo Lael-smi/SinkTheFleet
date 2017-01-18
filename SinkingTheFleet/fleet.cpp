@@ -111,21 +111,21 @@ void allocMem(Player players[], char size)
 			players[i].m_gameGrid[1] = new Ship*[numberOfRows];
 			for (short j = 0; j < numberOfRows; ++j)
 			{
-				/*		if (j == 7)
-						{							testing purposes if we need it
-							throw bad_alloc();
-						}*/
-						//-------------------------------------------------
+		/*		if (j == 7)
+				{							testing purposes if we need it
+					throw bad_alloc();
+				}*/
+			//-------------------------------------------------
 				players[i].m_gameGrid[0][j] = nullptr;
 				players[i].m_gameGrid[0][j] = new Ship[numberOfCols];
 				players[i].m_gameGrid[1][j] = nullptr;
 				players[i].m_gameGrid[1][j] = new Ship[numberOfCols];
 
-				//	your code goes here ...
-				// set the pointers to NULL, then allocate the
-				// memory for each row in each grid
-				//--------------------------------------------------
-				for (short k = 0; k < numberOfCols; ++k)
+			//	your code goes here ...
+			// set the pointers to NULL, then allocate the
+			// memory for each row in each grid
+			//--------------------------------------------------
+				for(short k = 0; k < numberOfCols; ++k)
 				{
 					players[i].m_gameGrid[0][j][k] = NOSHIP;
 					players[i].m_gameGrid[1][j][k] = NOSHIP;
@@ -148,7 +148,9 @@ void allocMem(Player players[], char size)
 // Title:		Delete Memory
 // Description:
 //		Safely deletes memory for grids
-// Programmer:
+// Programmer:  Paul Bladek
+//			    Anthony Waddell
+//				Lael Smith
 // 
 // Date:	12/20/05
 //
@@ -169,31 +171,17 @@ void allocMem(Player players[], char size)
 //
 // History Log:
 //		12/20/05 PB completed v 0.1
+//		01/12/17 AW added delete code block
 //   
 //---------------------------------------------------------------------------------
 void deleteMem(Player players[], char size)
 {
 	short numberOfRows = (toupper(size) == 'L') ? LARGEROWS : SMALLROWS;
+	// your code goes here ...
+	// delete[] in reverse order of allocMem()
+	// be sure to check if the memory was allocated (!nullptr) BEFORE deleting
 
-	for (int i = 0; i < NUMPLAYERS; i++)
-	{
-		for (int j = 0; j < numberOfRows; j++)
-		{
-			if (players[i].m_gameGrid[i][j] != nullptr)
-			{
-				delete[] players[i].m_gameGrid[0][j];
-				delete[] players[i].m_gameGrid[1][j];
-			}
-		} 
-		delete[] players[i].m_gameGrid[0];
-		delete[] players[i].m_gameGrid[1];
-	}
 }
-// your code goes here ...
-// delete[] in reverse order of allocMem()
-// be sure to check if the memory was allocated (!nullptr) BEFORE deleting
-
-
 
 //---------------------------------------------------------------------------------
 // Function:	printShip()
@@ -289,30 +277,10 @@ void printGrid(ostream& sout, Ship** grid, char size)
 	short numberOfRows = (toupper(size) == 'L') ? LARGEROWS : SMALLROWS;
 	short numberOfCols = (toupper(size) == 'L') ? LARGECOLS : SMALLCOLS;
 
-	for (short j = 1; j <= numberOfCols; ++j)
+	for(short j = 1; j <= numberOfCols; ++j)
 		sout << setw(3) << j;
-	sout << endl;
-
-	for (char c = 'A'; c < numberOfRows; c++)
-	{
-		sout << setw(3) << c;
-		int i = 0;
-		for (int j = 0; j < numberOfCols; j++)
-		{
-			printShip(sout, grid[i][j]);
-			sout << 
-			if ((int)c % 2 == 0)
-				sout << HORIZ << HORIZ << CR;
-		} i++;
-	}
-	//for (char c = 'A'; c < 'A' + numberOfRows; c++)
-	//{
-	//	sout << setw(3) << c;
-	//	for (int i = 0; i < numberOfCols; i++)
-	//	{
-	//		printShip(sout, grid[i][i]);
-	//	} sout << endl;
-	//}sout << endl;
+	sout  << endl;
+	// your code goes here ...
 	// use printShip for each element in the grid
 }
 
