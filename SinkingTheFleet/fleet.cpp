@@ -418,7 +418,8 @@ void setships(Player players[], char size, short whichPlayer)
 		
 		// your code goes here ...
 		players[whichPlayer].m_ships[j].m_name = (Ship)j;
-
+		
+		//players[whichPlayer].m_gameGrid[0][players[whichPlayer].m_ships[j].m_bowLocation.m_row][players[whichPlayer].m_ships[j].m_bowLocation.m_col] = NOSHIP;
 
 
 	} // end for j
