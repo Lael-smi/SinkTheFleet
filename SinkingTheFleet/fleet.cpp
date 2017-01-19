@@ -124,21 +124,21 @@ void allocMem(Player players[], char size)
 			players[i].m_gameGrid[1] = new Ship*[numberOfRows];
 			for (short j = 0; j < numberOfRows; ++j)
 			{
-		/*		if (j == 7)
-				{							testing purposes if we need it
-					throw bad_alloc();
-				}*/
-			//-------------------------------------------------
+				/*		if (j == 7)
+						{							testing purposes if we need it
+							throw bad_alloc();
+						}*/
+						//-------------------------------------------------
 				players[i].m_gameGrid[0][j] = nullptr;
 				players[i].m_gameGrid[0][j] = new Ship[numberOfCols];
 				players[i].m_gameGrid[1][j] = nullptr;
 				players[i].m_gameGrid[1][j] = new Ship[numberOfCols];
 
-			//	your code goes here ...
-			// set the pointers to NULL, then allocate the
-			// memory for each row in each grid
-			//--------------------------------------------------
-				for(short k = 0; k < numberOfCols; ++k)
+				//	your code goes here ...
+				// set the pointers to NULL, then allocate the
+				// memory for each row in each grid
+				//--------------------------------------------------
+				for (short k = 0; k < numberOfCols; ++k)
 				{
 					players[i].m_gameGrid[0][j][k] = NOSHIP;
 					players[i].m_gameGrid[1][j][k] = NOSHIP;
@@ -291,9 +291,9 @@ void printGrid(ostream& sout, Ship** grid, char size)
 	short numberOfCols = (toupper(size) == 'L') ? LARGECOLS : SMALLCOLS;
 	char c = 'A';
 	sout << "  ";
-	for(short j = 1; j <= numberOfCols; ++j)
+	for (short j = 1; j <= numberOfCols; ++j)
 		sout << setw(3) << j;
-	sout  << endl;
+	sout << endl;
 
 	for (int i = 0; i < numberOfRows; i++)
 	{
@@ -301,7 +301,7 @@ void printGrid(ostream& sout, Ship** grid, char size)
 		for (int j = 0; j < numberOfCols; j++)
 		{
 			printShip(sout, grid[i][j]);
-		} 
+		}
 		c += 1;
 		sout << endl << HORIZ;
 		for (int k = 0; k < numberOfCols; k++)
@@ -406,7 +406,7 @@ void setships(Player players[], char size, short whichPlayer)
 		cout << "Player " << whichPlayer + 1 << " Enter " << shipNames[j] <<
 			" bow coordinates <row letter><col #>: ";
 		players[whichPlayer].m_ships[j].m_bowLocation = getCoord(cin, size);
-		
+
 		// if ok
 		if (!validLocation(players[whichPlayer], j, size))
 		{
@@ -415,17 +415,34 @@ void setships(Player players[], char size, short whichPlayer)
 			j--; // redo
 			continue;
 		}
-		
+
 		// your code goes here ...
-		players[whichPlayer].m_ships[j].m_name = (Ship)j;
-		
+		players[whichPlayer].m_ships[j].m_name = (Ship)j; // need this ship
+
+		//(Ship)j need the bow location of current ship
+
 		//players[whichPlayer].m_gameGrid[0][players[whichPlayer].m_ships[j].m_bowLocation.m_row][players[whichPlayer].m_ships[j].m_bowLocation.m_col] = NOSHIP;
+		//players[whichPlayer].m_gameGrid[0][location.m_row][location.m_col] = (Ship)j; //?? bow location
 
+		if (input == 'V')
+		{
+			for (int i = 0; i < (Ship)j[shipSize]; i++)
+			{
+				players[whichPlayer].m_gameGrid[0][location.m_row + i][location.m_col] = (Ship)j;
+			}
+		}
+		else if (input = 'H')
+		{
+			for (int i = 0; i < (Ship)j[shipSize]; i++)
+			{
+				players[whichPlayer].m_gameGrid[0][location.m_row][location.m_col + i] = (Ship)j;
+			}
 
-	} // end for j
-	save = safeChoice("\nSave starting grid?", 'Y', 'N');
-	if (save == 'Y')
-		saveGrid(players, whichPlayer, size);
+		} // end for j
+		save = safeChoice("\nSave starting grid?", 'Y', 'N');
+		if (save == 'Y')
+			saveGrid(players, whichPlayer, size);
+	}
 }
 
 //---------------------------------------------------------------------------------
@@ -465,276 +482,348 @@ void saveGrid(Player players[], short whichPlayer, char size)
 	short numberOfCols = (toupper(size) == 'L') ? LARGECOLS : SMALLCOLS;
 	// your code goes here ...
 
-}
+	string fileName;
 
-//---------------------------------------------------------------------------------
-// Function:	getGrid()
-// Title:	GetGrid 
-// Description:
-//		Reads grid from a file and properly sets the ships
-// Programmer:	Paul Bladek
-// modified by:	
-// 
-// Date:	9/12/06
-//
-// Version:	0.5
-// 
-// Environment: Hardware: i3 
-//              Software: OS: Windows 7; 
-//              Compiles under Microsoft Visual C++ 2013
-//
-// Input:	grid from specified file
-//
-// Output:	prompts to cout
-//
-// Calls:
-//
-// Called By:	main()
-//
-// Parameters:	players: Player[];	the array of 2 players
-//		whichPlayer: short;	the player number  (0 or 1) 
-//		size: char;		'S' or 'L'
-//		string fileName:	the name of the file to be opened for reading
-// 
-// Returns: bool -- 	true if the file is opened and read;
-//			false otherwise
-//
-// History Log: 
-//		9/12/06 PB comleted v 0.5
-//     
-//---------------------------------------------------------------------------------
-bool getGrid(Player players[], short whichPlayer, char size, string fileName)
-{
-	string line;
-	ifstream ifs;
-	Ship ship = NOSHIP;
-	short shipCount[SHIP_SIZE_ARRAYSIZE] = { 0 };
-	char cell = ' ';
-	char fsize = 'S';
-	short numberOfRows = (toupper(size) == 'L') ? LARGEROWS : SMALLROWS;
-	short numberOfCols = (toupper(size) == 'L') ? LARGECOLS : SMALLCOLS;
+	cout << "Please enter the name of the file to save to";
+	cin >> fileName;
+	ofstream fout(fileName.c_str());
 
-	try
+	if (fout.is_open())
 	{
-		ifs.open(fileName.c_str());
-		if (!ifs)
+		for (int i = 0; i < numberOfCols; i++)
+		{
+			for (int j = 0; j < numberOfCols; j++)
+			{
+				fout << players[whichPlayer].m_gameGrid[0][i][j];
+			}
+			fout << endl;
+		}
+		fout << endl;
+		fout.close();
+	}
+
+	else {
+		cerr << "Could not open file to save grids to." << endl;
+	}
+
+	// Not sure if hardcoding the output file or not2
+	//ofstream outFile("SavedGrids.txt");
+	//outFile.open("SavedGrids.txt"); 
+	//if (outFile.is_open())
+	//{
+	//	for (int i = 0; i < numberOfRows; i++)
+	//	{
+	//		for (int j = 0; j < numberOfCols; j++)
+	//		{
+	//			outFile << players[whichPlayer].m_gameGrid[0][i][j];
+	//		}
+	//		outFile << endl;
+	//	}
+	//	outFile << endl;
+	//	outFile.close();
+	//}
+	//else
+	//{
+	//	cerr << "Could not open file to save grids to." << endl;
+	//}
+	}
+
+
+	//---------------------------------------------------------------------------------
+	// Function:	getGrid()
+	// Title:	GetGrid 
+	// Description:
+	//		Reads grid from a file and properly sets the ships
+	// Programmer:	Paul Bladek
+	// modified by:	
+	// 
+	// Date:	9/12/06
+	//
+	// Version:	0.5
+	// 
+	// Environment: Hardware: i3 
+	//              Software: OS: Windows 7; 
+	//              Compiles under Microsoft Visual C++ 2013
+	//
+	// Input:	grid from specified file
+	//
+	// Output:	prompts to cout
+	//
+	// Calls:
+	//
+	// Called By:	main()
+	//
+	// Parameters:	players: Player[];	the array of 2 players
+	//		whichPlayer: short;	the player number  (0 or 1) 
+	//		size: char;		'S' or 'L'
+	//		string fileName:	the name of the file to be opened for reading
+	// 
+	// Returns: bool -- 	true if the file is opened and read;
+	//			false otherwise
+	//
+	// History Log: 
+	//		9/12/06 PB comleted v 0.5
+	//     
+	//---------------------------------------------------------------------------------
+	bool getGrid(Player players[], short whichPlayer, char size, string fileName)
+	{
+		string line;
+		ifstream ifs;
+		Ship ship = NOSHIP;
+		short shipCount[SHIP_SIZE_ARRAYSIZE] = { 0 };
+		char cell = ' ';
+		char fsize = 'S';
+		short numberOfRows = (toupper(size) == 'L') ? LARGEROWS : SMALLROWS;
+		short numberOfCols = (toupper(size) == 'L') ? LARGECOLS : SMALLCOLS;
+
+		try
+		{
+			ifs.open(fileName.c_str());
+			if (!ifs)
+			{
+				cout << "could not open file " << fileName << endl
+					<< " press <enter> to continue" << endl;
+				cin.ignore(BUFFER_SIZE, '\n');
+				return false;
+			}
+		}
+		catch (exception e)
 		{
 			cout << "could not open file " << fileName << endl
 				<< " press <enter> to continue" << endl;
 			cin.ignore(BUFFER_SIZE, '\n');
 			return false;
 		}
+		// your code goes here ...
+
+
+		return true;
 	}
-	catch (exception e)
+
+	//---------------------------------------------------------------------------------
+	// Function:	getCoord()
+	// Title:	Get Coordinates 
+	// Description:
+	//		Returns a cell with coordinates set by user
+	// Programmer:	Paul Bladek
+	// 
+	// Date:	9/12/06
+	//
+	// Version:	1.0
+	// 
+	// Environment: Hardware: i3 
+	//              Software: OS: Windows 7; 
+	//              Compiles under Microsoft Visual C++ 2013
+	//
+	// Input:	cell coordinates (in the form "A13" from sin
+	//
+	// Output:	prompts to cout
+	//
+	// Calls:	none
+	//
+	// Called By:	main()
+	//		setships()
+	//
+	// Parameters:	sin: istream&;	the stream to read from
+	//		size: char;	'S' or 'L'
+	// 
+	// Returns:	Cell location -- a cell containing the input coordinates
+	//
+	// History Log: 
+	//		9/12/06 PB comleted v 1.0
+	//     
+	//---------------------------------------------------------------------------------
+	Cell getCoord(istream& sin, char size)
 	{
-		cout << "could not open file " << fileName << endl
-			<< " press <enter> to continue" << endl;
-		cin.ignore(BUFFER_SIZE, '\n');
-		return false;
-	}
-	// your code goes here ...
-
-
-	return true;
-}
-
-//---------------------------------------------------------------------------------
-// Function:	getCoord()
-// Title:	Get Coordinates 
-// Description:
-//		Returns a cell with coordinates set by user
-// Programmer:	Paul Bladek
-// 
-// Date:	9/12/06
-//
-// Version:	1.0
-// 
-// Environment: Hardware: i3 
-//              Software: OS: Windows 7; 
-//              Compiles under Microsoft Visual C++ 2013
-//
-// Input:	cell coordinates (in the form "A13" from sin
-//
-// Output:	prompts to cout
-//
-// Calls:	none
-//
-// Called By:	main()
-//		setships()
-//
-// Parameters:	sin: istream&;	the stream to read from
-//		size: char;	'S' or 'L'
-// 
-// Returns:	Cell location -- a cell containing the input coordinates
-//
-// History Log: 
-//		9/12/06 PB comleted v 1.0
-//     
-//---------------------------------------------------------------------------------
-Cell getCoord(istream& sin, char size)
-{
-	short numberOfRows = (toupper(size) == 'L') ? LARGEROWS : SMALLROWS;
-	short numberOfCols = (toupper(size) == 'L') ? LARGECOLS : SMALLCOLS;
-	char highChar = static_cast<char>(numberOfRows - 1) + 'A';
-	char row = 'A';
-	short col = 0;
-	Cell location = { 0, 0 };
-	do
-	{
-		col = 0;
-		cout << "Row must be a letter from A to " << highChar
-			<< " and column must be  from 1 to " << numberOfCols << ": ";
-		while ((row = toupper(sin.get())) < 'A' || row > highChar)
+		short numberOfRows = (toupper(size) == 'L') ? LARGEROWS : SMALLROWS;
+		short numberOfCols = (toupper(size) == 'L') ? LARGECOLS : SMALLCOLS;
+		char highChar = static_cast<char>(numberOfRows - 1) + 'A';
+		char row = 'A';
+		short col = 0;
+		Cell location = { 0, 0 };
+		do
 		{
-			sin.ignore(BUFFER_SIZE, '\n');
+			col = 0;
 			cout << "Row must be a letter from A to " << highChar
 				<< " and column must be  from 1 to " << numberOfCols << ": ";
-		}
-		sin >> col;
-		if (!sin)
-			sin.clear();
-		sin.ignore(BUFFER_SIZE, '\n');
-	} while (col < 1 || col > numberOfCols);
+			while ((row = toupper(sin.get())) < 'A' || row > highChar)
+			{
+				sin.ignore(BUFFER_SIZE, '\n');
+				cout << "Row must be a letter from A to " << highChar
+					<< " and column must be  from 1 to " << numberOfCols << ": ";
+			}
+			sin >> col;
+			if (!sin)
+				sin.clear();
+			sin.ignore(BUFFER_SIZE, '\n');
+		} while (col < 1 || col > numberOfCols);
 
-	location.m_col = col - 1;
-	location.m_row = static_cast<short>(row - 'A');
-	return location;
-}
+		location.m_col = col - 1;
+		location.m_row = static_cast<short>(row - 'A');
+		return location;
+	}
 
-//---------------------------------------------------------------------------------
-// Function:	validLocation()
-// Title:	Valid Location 
-// Description:
-//		Can the ship legitimately go there?
-// Programmer:
-// 
-// Date:	12/20/05
-//
-// Version:	0.1
-// 
-// Environment: Hardware: i3 
-//              Software: OS: Windows 7; 
-//              Compiles under Microsoft Visual C++ 2013
-//
-// Calls:
-//
-// Called By:
-//
-// Parameters:	player: const Player&;	a reference to the specific Player
-//		shipNumber: short;	the number of the ship (1 - 5)
-//					in the array player.m_ships[]
-//		size: char;		'S' or 'L'
-// 
-// Returns: bool -- 	true if the ship would not go off the edge
-//				or cross another ship;
-//			false otherwise
-//
-// History Log:
-//		12/20/05 PB completed v 0.1
-//     
-//---------------------------------------------------------------------------------
-bool validLocation(const Player& player, short shipNumber, char size)
-{
-	short numberOfRows = (toupper(size) == 'L') ? LARGEROWS : SMALLROWS;
-	short numberOfCols = (toupper(size) == 'L') ? LARGECOLS : SMALLCOLS;
-	// your code goes here ...
+	//---------------------------------------------------------------------------------
+	// Function:	validLocation()
+	// Title:	Valid Location 
+	// Description:
+	//		Can the ship legitimately go there?
+	// Programmer:
+	// 
+	// Date:	12/20/05
+	//
+	// Version:	0.1
+	// 
+	// Environment: Hardware: i3 
+	//              Software: OS: Windows 7; 
+	//              Compiles under Microsoft Visual C++ 2013
+	//
+	// Calls:
+	//
+	// Called By:
+	//
+	// Parameters:	player: const Player&;	a reference to the specific Player
+	//		shipNumber: short;	the number of the ship (1 - 5)
+	//					in the array player.m_ships[]
+	//		size: char;		'S' or 'L'
+	// 
+	// Returns: bool -- 	true if the ship would not go off the edge
+	//				or cross another ship;
+	//			false otherwise
+	//
+	// History Log:
+	//		12/20/05 PB completed v 0.1
+	//     
+	//---------------------------------------------------------------------------------
+	bool validLocation(const Player& player, short shipNumber, char size)
+	{
+		short numberOfRows = (toupper(size) == 'L') ? LARGEROWS : SMALLROWS;
+		short numberOfCols = (toupper(size) == 'L') ? LARGECOLS : SMALLCOLS;
+		//bool valid = false;
 
-	// replace the return value
-	return true;
-}
+		// your code goes here ...
 
-//---------------------------------------------------------------------------------
-// Function:	header()
-// Title:	header 
-// Description:
-//		Prints opening graphic
-// Programmer:	Paul Bladek
-//				Lael Smith
-//				Anthony Waddell
-// 
-// Date:	9/12/06
-//
-// Version:	1.0
-// 
-// Environment: Hardware: i3 
-//              Software: OS: Windows 7; 
-//              Compiles under Microsoft Visual C++ 2013
-//
-// Output:	
-//
-// Calls:	boxTop()
-//		boxLine()
-//		boxBottom()
-//
-// Called By:	main()
-//
-// Parameters:	sout: ostream&;	the stream to print to
-// 
-// Returns:	void
-//
-// History Log: 
-//		9/12/06 PB comleted v 1.0
-//		1/10/17 AW LS updated boxline v 1.1
-//     
-//---------------------------------------------------------------------------------
-void header(ostream& sout)
-{
-	const string empty;
-	const string sink("SINK THE FLEET!");
-	const string names("By DeathRule");
-	const string by("Edmonds Community College CS 132");
-	boxTop(sout, BOXWIDTH);
-	boxLine(sout, empty, BOXWIDTH);
-	boxLine(sout, sink, BOXWIDTH, 'C');
-	boxLine(sout, empty, BOXWIDTH);
-	boxLine(sout, names, BOXWIDTH);
-	boxLine(sout, empty, BOXWIDTH);
-	boxLine(sout, empty, BOXWIDTH);
-	boxLine(sout, by, BOXWIDTH, 'C');
-	boxLine(sout, empty, BOXWIDTH);
-	boxBottom(sout, BOXWIDTH);
-}
+		Cell bowLocation = player.m_ships[shipNumber].m_bowLocation;
 
-//---------------------------------------------------------------------------------
-// Function:	endBox()
-// Title:	End Box 
-// Description:
-//		prints closinging graphic
-// Programmer:	Paul Bladek
-// 
-// Date:	9/12/06
-//
-// Version:	1.0
-// 
-// Environment: Hardware: i3 
-//              Software: OS: Windows 7; 
-//              Compiles under Microsoft Visual C++ 2013
-//
-// Output:	
-//
-// Calls:	boxTop()
-//		boxLine()
-//		boxBottom()
-//
-// Called By:	main()
-//
-// Parameters:	player: short; the number of the winner (0 or 1)
-// 
-// Returns:	void
-//
-// History Log: 
-//		9/12/06 PB comleted v 1.0
-//     
-//---------------------------------------------------------------------------------
-void endBox(short player)
-{
-	const string empty;
-	ostringstream msg;
-	msg << "Congratulations player " << player + 1 << "!";
-	boxTop(cout, BOXWIDTH);
-	boxLine(cout, empty, BOXWIDTH);
-	boxLine(cout, msg.str(), BOXWIDTH, 'C');
-	boxLine(cout, empty, BOXWIDTH);
-	boxBottom(cout, BOXWIDTH);
-}
+		//if the ships bow location is on the grid
+		//if (player.m_ships[shipNumber].m_bowLocation.m_row > 0 && player.m_ships[shipNumber].m_bowLocation.m_row <= numberOfRows &&
+		//	player.m_ships[shipNumber].m_bowLocation.m_col > 0 && player.m_ships[shipNumber].m_bowLocation.m_col <= numberOfCols)
+		//{
+		//	if (player.m_ships[shipNumber].m_orientation == VERTICAL)
+		//	{
+		//		for (int i = 0; i < player.m_ships[shipSize]; i++)
+		//		{
+		//			if (//the space == NOSHIP)
+		//				//valid == true
+		//		}
+		//	}
+		//	else if (player.m_ships[shipNumber].m_orientation == HORIZONTAL)
+		//	{
+		//		for (int i = 0; i < player.m_ships[shipSize]; i++)
+		//		{
+		//			if (//the space == NOSHIP)
+		//				//valid == true
+		//		}
+		//	}
+		//}
+
+		// replace the return value
+		//return valid;
+		return true;
+	}
+
+	//---------------------------------------------------------------------------------
+	// Function:	header()
+	// Title:	header 
+	// Description:
+	//		Prints opening graphic
+	// Programmer:	Paul Bladek
+	//				Lael Smith
+	//				Anthony Waddell
+	// 
+	// Date:	9/12/06
+	//
+	// Version:	1.0
+	// 
+	// Environment: Hardware: i3 
+	//              Software: OS: Windows 7; 
+	//              Compiles under Microsoft Visual C++ 2013
+	//
+	// Output:	
+	//
+	// Calls:	boxTop()
+	//		boxLine()
+	//		boxBottom()
+	//
+	// Called By:	main()
+	//
+	// Parameters:	sout: ostream&;	the stream to print to
+	// 
+	// Returns:	void
+	//
+	// History Log: 
+	//		9/12/06 PB comleted v 1.0
+	//		1/10/17 AW LS updated boxline v 1.1
+	//     
+	//---------------------------------------------------------------------------------
+	void header(ostream& sout)
+	{
+		const string empty;
+		const string sink("SINK THE FLEET!");
+		const string names("By DeathRule");
+		const string by("Edmonds Community College CS 132");
+		boxTop(sout, BOXWIDTH);
+		boxLine(sout, empty, BOXWIDTH);
+		boxLine(sout, sink, BOXWIDTH, 'C');
+		boxLine(sout, empty, BOXWIDTH);
+		boxLine(sout, names, BOXWIDTH);
+		boxLine(sout, empty, BOXWIDTH);
+		boxLine(sout, empty, BOXWIDTH);
+		boxLine(sout, by, BOXWIDTH, 'C');
+		boxLine(sout, empty, BOXWIDTH);
+		boxBottom(sout, BOXWIDTH);
+	}
+
+	//---------------------------------------------------------------------------------
+	// Function:	endBox()
+	// Title:	End Box 
+	// Description:
+	//		prints closinging graphic
+	// Programmer:	Paul Bladek
+	// 
+	// Date:	9/12/06
+	//
+	// Version:	1.0
+	// 
+	// Environment: Hardware: i3 
+	//              Software: OS: Windows 7; 
+	//              Compiles under Microsoft Visual C++ 2013
+	//
+	// Output:	
+	//
+	// Calls:	boxTop()
+	//		boxLine()
+	//		boxBottom()
+	//
+	// Called By:	main()
+	//
+	// Parameters:	player: short; the number of the winner (0 or 1)
+	// 
+	// Returns:	void
+	//
+	// History Log: 
+	//		9/12/06 PB comleted v 1.0
+	//     
+	//---------------------------------------------------------------------------------
+	void endBox(short player)
+	{
+		const string empty;
+		ostringstream msg;
+		msg << "Congratulations player " << player + 1 << "!";
+		boxTop(cout, BOXWIDTH);
+		boxLine(cout, empty, BOXWIDTH);
+		boxLine(cout, msg.str(), BOXWIDTH, 'C');
+		boxLine(cout, empty, BOXWIDTH);
+		boxBottom(cout, BOXWIDTH);
+	}
 
