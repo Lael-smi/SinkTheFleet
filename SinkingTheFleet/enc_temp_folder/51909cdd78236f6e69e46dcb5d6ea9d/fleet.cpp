@@ -418,6 +418,11 @@ void setships(Player players[], char size, short whichPlayer)
 
 		// your code goes here ...
 		players[whichPlayer].m_ships[j].m_name = (Ship)j; // need this ship
+
+		//(Ship)j need the bow location of current ship
+
+		//players[whichPlayer].m_gameGrid[0][players[whichPlayer].m_ships[j].m_bowLocation.m_row][players[whichPlayer].m_ships[j].m_bowLocation.m_col] = NOSHIP;
+		//players[whichPlayer].m_gameGrid[0][location.m_row][location.m_col] = (Ship)j; //?? bow location
 		
 		if (input == 'V')
 		{
