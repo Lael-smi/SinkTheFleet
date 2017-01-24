@@ -392,6 +392,7 @@ void setships(Player players[], char size, short whichPlayer)
 	char input = 'V';
 	char ok = 'Y';
 	char save = 'N';
+
 	ostringstream outSStream;
 	Cell location = { 0, 0 };
 	for (short j = 1; j < SHIP_SIZE_ARRAYSIZE; j++)
@@ -426,6 +427,11 @@ void setships(Player players[], char size, short whichPlayer)
 			{
 				players[whichPlayer].m_gameGrid[0][location.m_row + i][location.m_col] = (Ship)j;
 			}
+			system("cls");
+			printGrid(cout, players[whichPlayer].m_gameGrid[0], size);
+			outSStream.str("");
+			outSStream << "Player " << whichPlayer + 1 << " " << shipNames[j] << " OK?";
+			ok = safeChoice(outSStream.str(), 'Y', 'N');
 		}
 		else if (input = 'H')
 		{
@@ -433,8 +439,16 @@ void setships(Player players[], char size, short whichPlayer)
 			{
 				players[whichPlayer].m_gameGrid[0][location.m_row][location.m_col + i] = (Ship)j;
 			}
+			system("cls");
+			printGrid(cout, players[whichPlayer].m_gameGrid[0], size);
+			outSStream.str("");
+			outSStream << "Player " << whichPlayer + 1 << " " << shipNames[j] << " OK?";
+			ok = safeChoice(outSStream.str(), 'Y', 'N');
+		}
 
-		} // end for j
+
+
+		// end for j
 	}
 	save = safeChoice("\nSave starting grid?", 'Y', 'N');
 	if (save == 'Y')
@@ -745,34 +759,6 @@ bool validLocation(const Player& player, short shipNumber, char size)
 		}
 	}
 
-
-
-
-
-
-	//if the ships bow location is on the grid
-	/*if (player.m_ships[shipNumber].m_bowLocation.m_row > 0 && player.m_ships[shipNumber].m_bowLocation.m_row <= numberOfRows &&
-		player.m_ships[shipNumber].m_bowLocation.m_col > 0 && player.m_ships[shipNumber].m_bowLocation.m_col <= numberOfCols)*/
-		//{
-		//	if (player.m_ships[shipNumber].m_orientation == VERTICAL)
-		//	{
-		//		for (int i = 0; i < player.m_ships[shipSize]; i++)
-		//		{
-		//			if (//the space == NOSHIP)
-		//				//valid == true
-		//		}
-		//	}
-		//	else if (player.m_ships[shipNumber].m_orientation == HORIZONTAL)
-		//	{
-		//		for (int i = 0; i < player.m_ships[shipSize]; i++)
-		//		{
-		//			if (//the space == NOSHIP)
-		//				//valid == true
-		//		}
-		//	}
-		//}
-
-	/*replace the return value*/
 	return valid;
 	//return true;
 }
@@ -821,7 +807,7 @@ void header(ostream& sout)
 	boxLine(sout, empty, BOXWIDTH);
 	boxLine(sout, sink, BOXWIDTH, 'C');
 	boxLine(sout, empty, BOXWIDTH);
-	boxLine(sout, names, BOXWIDTH);
+	boxLine(sout, names, BOXWIDTH, 'C' );
 	boxLine(sout, empty, BOXWIDTH);
 	boxLine(sout, empty, BOXWIDTH);
 	boxLine(sout, by, BOXWIDTH, 'C');
@@ -871,4 +857,5 @@ void endBox(short player)
 	boxLine(cout, empty, BOXWIDTH);
 	boxBottom(cout, BOXWIDTH);
 }
+
 

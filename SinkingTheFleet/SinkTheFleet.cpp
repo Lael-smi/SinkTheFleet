@@ -59,14 +59,15 @@ int main(void)
 	char again = 'N';
 	char gridSize = 'S';
 	char readFromFile = 'N';
+	string beginBattle;
 	short whichPlayer = 0;
 	bool gameOver = false;
 	bool reshot = false;
-	Cell coord = {0, 0};
+	Cell coord = { 0, 0 };
 	string message;
 	string filename;
 	Ship shipHit = NOSHIP;
-	Player game[NUMPLAYERS] ;	// the two players in an array
+	Player game[NUMPLAYERS];	// the two players in an array
 	// other stuff ...
 
 	do
@@ -75,8 +76,8 @@ int main(void)
 		cout << endl;
 		header(cout);
 		gridSize = safeChoice("Which size grid to you want to use", 'S', 'L');
-		
-		if( gridSize == 'L')
+
+		if (gridSize == 'L')
 		{
 			numRows = LARGEROWS;
 			numCols = LARGECOLS;
@@ -86,31 +87,37 @@ int main(void)
 			numRows = SMALLROWS;
 			numCols = SMALLCOLS;
 		}
-		initializePlayer(game);		
+		initializePlayer(game);
 		initializePlayer(game + 1);
 		// dynamically create the rows of the array
 		allocMem(game, gridSize);
-		for(whichPlayer = 0; whichPlayer < NUMPLAYERS; whichPlayer++)
+		for (whichPlayer = 0; whichPlayer < NUMPLAYERS; whichPlayer++)
 		{
 			// enter grid files or let users enter ships
 			cout << "Player " << (whichPlayer + 1) << ", ";
 			readFromFile = safeChoice("Would you like to read starting grid from a file?", 'Y', 'N');
+			//if (readFromFile == 'Y')
+			//{
+			//	//call get grid, need to work on getGrid
+			//}
 			system("cls");
 			printGrid(cout, game[whichPlayer].m_gameGrid[0], gridSize);
 			setships(game, gridSize, whichPlayer);
 		}
 		whichPlayer = 0;
-		while(!gameOver)
+		while (!gameOver)
 		{
-		// ... a lot more stuff ...
+			system("cls");
+			header(cout);
+
+			printGrid(cout, game[whichPlayer].m_gameGrid[1], gridSize);
 
 
 			whichPlayer = !whichPlayer;  // switch players
 		}
 
 		again = safeChoice("Would you like to play again?", 'Y', 'N');
-	}
-	while(again == 'Y');
+	} while (again == 'Y');
 
 	return EXIT_SUCCESS;
-} 
+}
