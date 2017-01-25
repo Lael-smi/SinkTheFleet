@@ -111,6 +111,7 @@ int main(void)
 		cin.get();
 
 		whichPlayer = 0;
+		gameOver = false;
 		while (!gameOver)
 		{
 			printGrid(cout, game[whichPlayer].m_gameGrid[1], gridSize);
@@ -133,12 +134,18 @@ int main(void)
 			{
 				game[whichPlayer].m_gameGrid[1][coord.m_row][coord.m_col] = HIT;
 				cout << "HIT";
-				game[whichPlayer].m_piecesLeft -= 1;
+				
 				game[!whichPlayer].m_ships[shipHit].m_piecesLeft -= 1;
 				if (game[!whichPlayer].m_ships[shipHit].m_piecesLeft == 0)
 				{
 					cout << shipNames[shipHit] << " Has been Sunk!";
 
+				}
+				game[!whichPlayer].m_piecesLeft -= 1;
+				if (game[!whichPlayer].m_piecesLeft == 0)
+				{
+					gameOver = true;
+					// CONGRATULATIONS
 				}
 				cout << "Press <ENTER>";
 				cin.get();
