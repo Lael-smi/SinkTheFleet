@@ -291,6 +291,7 @@ void printGrid(ostream& sout, Ship** grid, char size)
 	short numberOfRows = (toupper(size) == 'L') ? LARGEROWS : SMALLROWS;
 	short numberOfCols = (toupper(size) == 'L') ? LARGECOLS : SMALLCOLS;
 	char c = 'A';
+	system("cls");
 	sout << "  ";
 	for (short j = 1; j <= numberOfCols; ++j)
 		sout << setw(3) << j;
@@ -397,7 +398,6 @@ void setships(Player players[], char size, short whichPlayer)
 	Cell location = { 0, 0 };
 	for (short j = 1; j < SHIP_SIZE_ARRAYSIZE; j++)
 	{
-		system("cls");
 		printGrid(cout, players[whichPlayer].m_gameGrid[0], size);
 		outSStream.str("");
 		outSStream << "Player " << whichPlayer + 1 << " Enter "
@@ -427,7 +427,6 @@ void setships(Player players[], char size, short whichPlayer)
 			{
 				players[whichPlayer].m_gameGrid[0][location.m_row + i][location.m_col] = (Ship)j;
 			}
-			system("cls");
 			printGrid(cout, players[whichPlayer].m_gameGrid[0], size);
 			outSStream.str("");
 			outSStream << "Player " << whichPlayer + 1 << " " << shipNames[j] << " OK?";
@@ -439,14 +438,11 @@ void setships(Player players[], char size, short whichPlayer)
 			{
 				players[whichPlayer].m_gameGrid[0][location.m_row][location.m_col + i] = (Ship)j;
 			}
-			system("cls");
 			printGrid(cout, players[whichPlayer].m_gameGrid[0], size);
 			outSStream.str("");
 			outSStream << "Player " << whichPlayer + 1 << " " << shipNames[j] << " OK?";
 			ok = safeChoice(outSStream.str(), 'Y', 'N');
 		}
-
-
 
 		// end for j
 	}

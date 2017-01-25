@@ -114,7 +114,7 @@ int main(void)
 		while (!gameOver)
 		{
 			printGrid(cout, game[whichPlayer].m_gameGrid[1], gridSize);
-			cout << "Player " << whichPlayer + 1 << ", Enter coordinates for firing:" << endl;
+			cout << "Player " << whichPlayer + 1 << ", Enter coordinates for firing:";
 			coord = getCoord(cin, gridSize);
 			shipHit = game[!whichPlayer].m_gameGrid[0][coord.m_row][coord.m_col];
 			if (game[whichPlayer].m_gameGrid[1][coord.m_row][coord.m_col] == MISSED ||
@@ -124,24 +124,17 @@ int main(void)
 			}
 
 			if (shipHit == NOSHIP)
-			{
 				game[whichPlayer].m_gameGrid[1][coord.m_row][coord.m_col] = MISSED;
-				cout << "MISSED";
-				cin.get();
-			}
 			else
 			{
 				game[whichPlayer].m_gameGrid[1][coord.m_row][coord.m_col] = HIT;
-				cout << "HIT";
 				game[whichPlayer].m_piecesLeft -= 1;
 				game[!whichPlayer].m_ships[shipHit].m_piecesLeft -= 1;
 				if (game[!whichPlayer].m_ships[shipHit].m_piecesLeft == 0)
 				{
 					cout << shipNames[shipHit] << " Has been Sunk!";
-
+					cin.get();
 				}
-				cout << "Press <ENTER>";
-				cin.get();
 				continue;
 			}
 
