@@ -8,6 +8,8 @@
 #include <iostream>
 #include <iomanip>
 #include "fleet.h"
+
+
 using namespace std;
 extern const char* shipNames[7];
 //---------------------------------------------------------------------------------
@@ -59,10 +61,11 @@ int main(void)
 	char again = 'N';
 	char gridSize = 'S';
 	char readFromFile = 'N';
-	//string beginBattle;
 	short whichPlayer = 0;
 	bool gameOver = false;
 	bool reshot = false;
+
+
 	Cell coord = { 0, 0 };
 	string message;
 	string filename;
@@ -96,10 +99,10 @@ int main(void)
 			// enter grid files or let users enter ships
 			cout << "Player " << (whichPlayer + 1) << ", ";
 			readFromFile = safeChoice("Would you like to read starting grid from a file?", 'Y', 'N');
-			//if (readFromFile == 'Y')
-			//{
-			//	//call get grid, need to work on getGrid
-			//}
+			if (readFromFile == 'Y')
+			{
+				//call get grid, need to work on getGrid
+			}
 			
 			printGrid(cout, game[whichPlayer].m_gameGrid[0], gridSize);
 			setships(game, gridSize, whichPlayer);
@@ -121,31 +124,33 @@ int main(void)
 			if (game[whichPlayer].m_gameGrid[1][coord.m_row][coord.m_col] == MISSED ||
 				game[whichPlayer].m_gameGrid[1][coord.m_row][coord.m_col] == HIT)
 			{
+				cout << "You have already shot at that space, please shoot again";
 				continue;
 			}
 
 			if (shipHit == NOSHIP)
 			{
 				game[whichPlayer].m_gameGrid[1][coord.m_row][coord.m_col] = MISSED;
-				cout << "MISSED";
+				cout << "MISSED!" << endl;;
 				cin.get();
 			}
 			else
 			{
 				game[whichPlayer].m_gameGrid[1][coord.m_row][coord.m_col] = HIT;
-				cout << "HIT";
+				cout << "HIT!" << endl;;
 				
 				game[!whichPlayer].m_ships[shipHit].m_piecesLeft -= 1;
 				if (game[!whichPlayer].m_ships[shipHit].m_piecesLeft == 0)
 				{
-					cout << shipNames[shipHit] << " Has been Sunk!";
+					cout << shipNames[shipHit] << " Has been Sunk!" << endl;;
 
 				}
 				game[!whichPlayer].m_piecesLeft -= 1;
 				if (game[!whichPlayer].m_piecesLeft == 0)
 				{
 					gameOver = true;
-					// CONGRATULATIONS
+					/*cout << "Player " << whichPlayer + 1 << " has sunken Player " << !whichPlayer + 1 << "'s fleet!" << endl;*/
+					endBox(whichPlayer);
 				}
 				cout << "Press <ENTER>";
 				cin.get();

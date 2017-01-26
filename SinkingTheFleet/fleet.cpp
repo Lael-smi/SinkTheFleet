@@ -194,7 +194,20 @@ void deleteMem(Player players[], char size)
 	// your code goes here ...
 	// delete[] in reverse order of allocMem()
 	// be sure to check if the memory was allocated (!nullptr) BEFORE deleting
+	for (int i = 0; i < NUMPLAYERS; i++)
+	{
+		for (int j = 0; j < numberOfRows; j++)
+		{
+			if (players[i].m_gameGrid[i][j] != nullptr)
+			{
+				delete[] players[i].m_gameGrid[0][j];
+				delete[] players[i].m_gameGrid[1][j];
+			}
+		}
+		delete[] players[i].m_gameGrid[0];
+		delete[] players[i].m_gameGrid[1];
 
+	}
 }
 
 //---------------------------------------------------------------------------------
@@ -448,7 +461,11 @@ void setships(Player players[], char size, short whichPlayer)
 	}
 	save = safeChoice("\nSave starting grid?", 'Y', 'N');
 	if (save == 'Y')
+	{
+		system("cls");
 		saveGrid(players, whichPlayer, size);
+	}
+
 
 }
 
@@ -490,9 +507,11 @@ void saveGrid(Player players[], short whichPlayer, char size)
 	// your code goes here ...
 
 	string fileName;
+	string extension = ".shp";
 
-	cout << "Please enter the name of the file to save to";
+	cout << "Please enter the name of the file to save to (.shp will be added): ";
 	cin >> fileName;
+	//fileName.append(extension);
 	ofstream fout(fileName.c_str());
 
 	if (fout.is_open())
@@ -509,30 +528,11 @@ void saveGrid(Player players[], short whichPlayer, char size)
 		fout.close();
 	}
 
-	else {
+	else
+	{
 		cerr << "Could not open file to save grids to." << endl;
 	}
-
-	// Not sure if hardcoding the output file or not2
-	//ofstream outFile("SavedGrids.txt");
-	//outFile.open("SavedGrids.txt"); 
-	//if (outFile.is_open())
-	//{
-	//	for (int i = 0; i < numberOfRows; i++)
-	//	{
-	//		for (int j = 0; j < numberOfCols; j++)
-	//		{
-	//			outFile << players[whichPlayer].m_gameGrid[0][i][j];
-	//		}
-	//		outFile << endl;
-	//	}
-	//	outFile << endl;
-	//	outFile.close();
-	//}
-	//else
-	//{
-	//	cerr << "Could not open file to save grids to." << endl;
-	//}
+	cout << endl << fileName << "saved";
 }
 
 
@@ -803,7 +803,7 @@ void header(ostream& sout)
 	boxLine(sout, empty, BOXWIDTH);
 	boxLine(sout, sink, BOXWIDTH, 'C');
 	boxLine(sout, empty, BOXWIDTH);
-	boxLine(sout, names, BOXWIDTH, 'C' );
+	boxLine(sout, names, BOXWIDTH, 'C');
 	boxLine(sout, empty, BOXWIDTH);
 	boxLine(sout, empty, BOXWIDTH);
 	boxLine(sout, by, BOXWIDTH, 'C');
