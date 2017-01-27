@@ -515,7 +515,7 @@ void saveGrid(Player players[], short whichPlayer, char size)
 	ofstream fout(fileName.c_str());
 
 	if (fout.is_open())
-		
+
 	{
 		fout << size << endl;
 		for (int i = 0; i < numberOfRows; i++)
@@ -585,7 +585,8 @@ bool getGrid(Player players[], short whichPlayer, char size, string fileName)
 	Ship ship = NOSHIP;
 	short shipCount[SHIP_SIZE_ARRAYSIZE] = { 0 };
 	char cell = ' ';
-	char fsize = 'S';
+	char fsize = 'A';
+	int location = 0;
 	short numberOfRows = (toupper(size) == 'L') ? LARGEROWS : SMALLROWS;
 	short numberOfCols = (toupper(size) == 'L') ? LARGECOLS : SMALLCOLS;
 
@@ -608,8 +609,48 @@ bool getGrid(Player players[], short whichPlayer, char size, string fileName)
 		return false;
 	}
 	// your code goes here ...
-
-
+	ifs >> fsize;
+	if (fsize == size)
+	{
+		for (int i = 0; i < numberOfRows; i++)
+		{
+			for (int j = 0; j < numberOfCols; j++)
+			{
+				ifs.get(cell);
+				location = (int)(cell - 48);
+				switch (location)
+				{
+				case 0:
+					ship = NOSHIP;
+					players[whichPlayer].m_gameGrid[0][i][j] = ship;
+					break;
+				case 1:
+					ship = MINESWEEPER;
+					players[whichPlayer].m_gameGrid[0][i][j] = ship;
+					break;
+				case 2:
+					ship = SUB;
+					players[whichPlayer].m_gameGrid[0][i][j] = ship;
+					break;
+				case 3:
+					ship = FRIGATE;
+					players[whichPlayer].m_gameGrid[0][i][j] = ship;
+					break;
+				case 4:
+					ship = BATTLESHIP;
+					players[whichPlayer].m_gameGrid[0][i][j] = ship;
+					break;
+				case 5:
+					ship = CARRIER;
+					players[whichPlayer].m_gameGrid[0][i][j] = ship;
+					break;
+				default:
+					j--;
+					
+				}
+			}
+		}
+	}
 	return true;
 }
 

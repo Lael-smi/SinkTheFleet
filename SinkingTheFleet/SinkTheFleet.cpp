@@ -101,11 +101,17 @@ int main(void)
 			readFromFile = safeChoice("Would you like to read starting grid from a file?", 'Y', 'N');
 			if (readFromFile == 'Y')
 			{
-				//call get grid, need to work on getGrid
+				cout << "Please enter the name of the file you would like to load: ";
+				cin >> filename;
+				getGrid(game, whichPlayer, gridSize, filename);
+				cin.ignore(BUFFER_SIZE, '\n');
 			}
-			
-			printGrid(cout, game[whichPlayer].m_gameGrid[0], gridSize);
-			setships(game, gridSize, whichPlayer);
+		
+			else {
+				setships(game, gridSize, whichPlayer);
+			}
+
+	
 
 		}
 		system("cls");
