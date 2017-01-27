@@ -48,6 +48,8 @@ char safeChoice(string prompt, char choice1, char choice2)
 {
 	char input = choice1;
 	ostringstream outSStream;
+	long originalformat = outSStream.flags();
+
 	outSStream << " (" << choice1 << "/" << choice2 << "): " << choice1 << "\b";
 	cout << prompt << outSStream.str();
 	while((input = toupper(input = cin.get())) != choice1
@@ -60,6 +62,7 @@ char safeChoice(string prompt, char choice1, char choice2)
 		input = choice1;
 	else
 		cin.ignore(BUFFER_SIZE, '\n');
+	outSStream.flags(originalformat);
 	return input;
 }
 

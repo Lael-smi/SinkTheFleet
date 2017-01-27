@@ -32,14 +32,13 @@ extern const char* shipNames[7];
 //
 // Input:		
 //
-// Output:		
+// Output:		EXIT_SUCCESS
 //
 // Calls:		initializePlayer()
 //				allocMem()
 //				safeChoice()
 //				getGrid()
 //				printGrid()
-//				resetGrid()
 //				setships()
 //				header()
 //				getCoord()
@@ -63,18 +62,15 @@ int main(void)
 	char again = 'N';
 	char gridSize = 'S';
 	char readFromFile = 'N';
-	char correctFile = 'N';
+	bool correctFile = true;
 	short whichPlayer = 0;
 	bool gameOver = false;
-	bool reshot = false;
-
 
 	Cell coord = { 0, 0 };
 	string message;
 	string filename;
 	Ship shipHit = NOSHIP;
 	Player game[NUMPLAYERS];	// the two players in an array
-	// other stuff ...
 
 	do
 	{
@@ -107,15 +103,21 @@ int main(void)
 			{
 				cout << "Please enter the name of the file you would like to load: ";
 				cin >> filename;
-				getGrid(game, whichPlayer, gridSize, filename);
-				printGrid(cout, game[whichPlayer].m_gameGrid[0], gridSize);
-				cin.ignore(BUFFER_SIZE, '\n');
-				correctFile = safeChoice("OK?", 'Y', 'N');
-				if (correctFile == 'N')
+				filename += ".shp";
+				correctFile = getGrid(game, whichPlayer, gridSize, filename);
+				if (correctFile)
 				{
+					printGrid(cout, game[whichPlayer].m_gameGrid[0], gridSize);
+					cin.ignore(BUFFER_SIZE, '\n');
+					correctFile = ('N' != safeChoice("OK?", 'Y', 'N'));
+					system("cls");
+				}
+				if (!correctFile)
+				{
+					cout << "Press <ENTER> to continue.";
+					cin.get();
 					system("cls");
 					whichPlayer--;
-					continue;
 				}
 			}
 			else
@@ -140,6 +142,7 @@ int main(void)
 				game[whichPlayer].m_gameGrid[1][coord.m_row][coord.m_col] == HIT)
 			{
 				cout << "You have already shot at that space, please shoot again";
+				cin.get();
 				continue;
 			}
 
@@ -164,15 +167,16 @@ int main(void)
 				if (game[!whichPlayer].m_piecesLeft == 0)
 				{
 					gameOver = true;
-					/*cout << "Player " << whichPlayer + 1 << " has sunken Player " << !whichPlayer + 1 << "'s fleet!" << endl;*/
 					endBox(whichPlayer);
 				}
 				cout << "Press <ENTER>";
 				cin.get();
-				continue;
+				continue;	//take another turn
 			}
 			whichPlayer = !whichPlayer;  // switch players
 		}
+		//deallocate memory
+		deleteMem(game, gridSize);
 		again = safeChoice("Would you like to play again?", 'Y', 'N');
 	} while (again == 'Y');
 	return EXIT_SUCCESS;
