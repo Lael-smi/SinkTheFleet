@@ -380,7 +380,7 @@ void initializePlayer(Player* playerPtr)
 // 
 // Date:	9/12/06
 //
-// Version:	0.5
+// Version:	0.6
 // 
 // Environment: Hardware: Intel(R) Core(TM) i5-6500 CPU @ 3.20GHz (4 CPUs), ~3.2GHz 
 //              Software: OS: Windows 10 
@@ -398,13 +398,14 @@ void initializePlayer(Player* playerPtr)
 // Called By:	main()
 //
 // Parameters:	players: Player[];	the array of 2 players 
-//		size: char;		'S' or 'L'
-//		whichPlayer: short;	the player number (0 or 1)
+//				size: char;		'S' or 'L'
+//				whichPlayer: short;	the player number (0 or 1)
 // 
 // Returns:	void
 //
 // History Log: 
-//		9/12/06 PB comleted v 0.5
+//		9/12/06		PB		comleted v0.5
+//		01/27/17	AW LS	completed v0.6
 //     
 //---------------------------------------------------------------------------------
 void setships(Player players[], char size, short whichPlayer)
@@ -437,7 +438,6 @@ void setships(Player players[], char size, short whichPlayer)
 			continue;
 		}
 
-		// your code goes here ...
 		players[whichPlayer].m_ships[j].m_name = (Ship)j; // need this ship
 
 		if (input == 'V')
@@ -462,9 +462,7 @@ void setships(Player players[], char size, short whichPlayer)
 			outSStream << "Player " << whichPlayer + 1 << " " << shipNames[j] << " OK?";
 			ok = safeChoice(outSStream.str(), 'Y', 'N');
 		}
-
-		// end for j
-	}
+	}// end for j
 	save = safeChoice("\nSave starting grid?", 'Y', 'N');
 	if (save == 'Y')
 	{
@@ -484,7 +482,7 @@ void setships(Player players[], char size, short whichPlayer)
 // 
 // Date:	12/20/05
 //
-// Version:	0.1
+// Version:	0.2
 // 
 // Environment: Hardware: Intel(R) Core(TM) i5-6500 CPU @ 3.20GHz (4 CPUs), ~3.2GHz 
 //              Software: OS: Windows 10 
@@ -503,7 +501,8 @@ void setships(Player players[], char size, short whichPlayer)
 // Returns:	void
 //
 // History Log:
-//		12/20/05 PB completed v 0.1
+//		12/20/05	PB		completed v0.1
+//		01/27/17	AW LS	completed v0.2
 //     
 //---------------------------------------------------------------------------------
 void saveGrid(Player players[], short whichPlayer, char size)
@@ -558,7 +557,7 @@ void saveGrid(Player players[], short whichPlayer, char size)
 // 
 // Date:	9/12/06
 //
-// Version:	0.5
+// Version:	0.6
 // 
 // Environment: Hardware: Intel(R) Core(TM) i5-6500 CPU @ 3.20GHz (4 CPUs), ~3.2GHz 
 //              Software: OS: Windows 10 
@@ -573,16 +572,16 @@ void saveGrid(Player players[], short whichPlayer, char size)
 // Called By:	main()
 //
 // Parameters:	players: Player[];	the array of 2 players
-//		whichPlayer: short;	the player number  (0 or 1) 
-//		size: char;		'S' or 'L'
-//		string fileName:	the name of the file to be opened for reading
+//				whichPlayer: short;	the player number  (0 or 1) 
+//				size: char;		'S' or 'L'
+//				string fileName:	the name of the file to be opened for reading
 // 
 // Returns: bool -- 	true if the file is opened and read;
 //			false otherwise
 //
 // History Log: 
 //		9/12/06 PB comleted v 0.5
-//		01/27/17	AW LS	
+//		01/27/17	AW LS	completed v0.6
 //     
 //---------------------------------------------------------------------------------
 bool getGrid(Player players[], short whichPlayer, char size, string fileName)
