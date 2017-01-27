@@ -538,7 +538,6 @@ void saveGrid(Player players[], short whichPlayer, char size)
 	cout << endl << fileName << " saved." << endl;
 	cin.ignore(BUFFER_SIZE, '\n');
 	cin.get();
-	system("cls");
 }
 
 
