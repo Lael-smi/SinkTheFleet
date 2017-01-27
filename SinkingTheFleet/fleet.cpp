@@ -370,7 +370,8 @@ void initializePlayer(Player* playerPtr)
 // Description:
 //		Allows user to put ships in grid
 // Programmer:	Paul Bladek
-// modified by:	
+// modified by:	Lael Smith 
+//				Anthony Waddell
 // 
 // Date:	9/12/06
 //

@@ -18,6 +18,8 @@ extern const char* shipNames[7];
 // Description:
 //				Runs the Sink the Fleet Game
 // Programmer:	Paul Bladek
+//				Anthony Waddell
+//				Lael Smith
 // modified by:
 // 
 // Date:		12/9/2010
@@ -61,6 +63,7 @@ int main(void)
 	char again = 'N';
 	char gridSize = 'S';
 	char readFromFile = 'N';
+	char correctFile = 'N';
 	short whichPlayer = 0;
 	bool gameOver = false;
 	bool reshot = false;
@@ -99,20 +102,26 @@ int main(void)
 			// enter grid files or let users enter ships
 			cout << "Player " << (whichPlayer + 1) << ", ";
 			readFromFile = safeChoice("Would you like to read starting grid from a file?", 'Y', 'N');
+
 			if (readFromFile == 'Y')
 			{
 				cout << "Please enter the name of the file you would like to load: ";
 				cin >> filename;
 				getGrid(game, whichPlayer, gridSize, filename);
+				printGrid(cout, game[whichPlayer].m_gameGrid[0], gridSize);
 				cin.ignore(BUFFER_SIZE, '\n');
+				correctFile = safeChoice("OK?", 'Y', 'N');
+				if (correctFile == 'N')
+				{
+					system("cls");
+					whichPlayer--;
+					continue;
+				}
 			}
-		
-			else {
+			else
+			{
 				setships(game, gridSize, whichPlayer);
 			}
-
-	
-
 		}
 		system("cls");
 		header(cout);
@@ -144,7 +153,7 @@ int main(void)
 			{
 				game[whichPlayer].m_gameGrid[1][coord.m_row][coord.m_col] = HIT;
 				cout << "HIT!" << endl;;
-				
+
 				game[!whichPlayer].m_ships[shipHit].m_piecesLeft -= 1;
 				if (game[!whichPlayer].m_ships[shipHit].m_piecesLeft == 0)
 				{
@@ -162,14 +171,9 @@ int main(void)
 				cin.get();
 				continue;
 			}
-
-
-
 			whichPlayer = !whichPlayer;  // switch players
 		}
-
 		again = safeChoice("Would you like to play again?", 'Y', 'N');
 	} while (again == 'Y');
-
 	return EXIT_SUCCESS;
 }
