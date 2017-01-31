@@ -60,7 +60,6 @@ enum Direction
 	VERTICAL	// 1
 };
 
-
 //----------------------------------------------------------------------------
 // row and column location
 //----------------------------------------------------------------------------
@@ -99,12 +98,6 @@ struct Player
 
 // prints to sout one individual ship
 void printShip(ostream & sout, Ship thisShip);
-
-// inputs a ship number from sin and returns a ship
-Ship inputShip(istream & sin); 
-
-// returns true if ship has been sunk (no points left)
-bool isSunk(Ship thisShip); 
 
 //  prints a specific game grid
 void printGrid(ostream& sout, Ship** grid, char size); 
@@ -152,5 +145,4 @@ bool validLocation(const Player& player, short shipNumber, char size);
 void header(ostream& sout);
 // prints closinging graphic
 void endBox(short player);		
-// your headers go here ...
 #endif

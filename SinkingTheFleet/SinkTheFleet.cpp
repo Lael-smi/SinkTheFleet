@@ -12,7 +12,7 @@
 
 using namespace std;
 extern const char* shipNames[7];
-//---------------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 // Function:	main()
 // Title:		Set ShipInfo
 // Description:
@@ -22,9 +22,10 @@ extern const char* shipNames[7];
 //				Lael Smith
 // modified by:
 // 
-// Date:		12/9/2010
+// Date:		1/31/2017
 //
 // Version:		0.5
+//				1.0
 // 
 // Environment: Hardware: i3 
 //              Software: OS: Windows 7; 
@@ -53,12 +54,13 @@ extern const char* shipNames[7];
 //
 // History Log: 
 //				12/9/2010 PB completed v 0.5
+//				1/31/2017 LS AW completed v 1.0
 //   
-//---------------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 int main(void)
 {
-	short numRows = SMALLROWS;			// total number of rows in the array
-	short numCols = SMALLCOLS;			// total number of columns in the array
+	short numRows = SMALLROWS;		// total number of rows in the array
+	short numCols = SMALLCOLS;		// total number of columns in the array
 	char again = 'N';
 	char gridSize = 'S';
 	char readFromFile = 'N';
@@ -97,17 +99,20 @@ int main(void)
 		{
 			// enter grid files or let users enter ships
 			cout << "Player " << (whichPlayer + 1) << ", ";
-			readFromFile = safeChoice("Would you like to read starting grid from a file?", 'Y', 'N');
+			readFromFile = safeChoice
+			("Would you like to read starting grid from a file?", 'Y', 'N');
 
 			if (readFromFile == 'Y')
 			{
-				cout << "Please enter the name of the file you would like to load: ";
+				cout << 
+				"Please enter the name of the file you would like to load: ";
 				cin >> filename;
 				filename += ".shp";
 				correctFile = getGrid(game, whichPlayer, gridSize, filename);
 				if (correctFile)
 				{
-					printGrid(cout, game[whichPlayer].m_gameGrid[0], gridSize);
+					printGrid
+					(cout, game[whichPlayer].m_gameGrid[0], gridSize);
 					cin.ignore(BUFFER_SIZE, '\n');
 					correctFile = ('N' != safeChoice("OK?", 'Y', 'N'));
 					system("cls");
@@ -135,32 +140,39 @@ int main(void)
 		while (!gameOver)
 		{
 			printGrid(cout, game[whichPlayer].m_gameGrid[1], gridSize);
-			cout << "Player " << whichPlayer + 1 << ", Enter coordinates for firing:" << endl;
+			cout << "Player " << whichPlayer + 1 <<
+				", Enter coordinates for firing:" << endl;
 			coord = getCoord(cin, gridSize);
-			shipHit = game[!whichPlayer].m_gameGrid[0][coord.m_row][coord.m_col];
-			if (game[whichPlayer].m_gameGrid[1][coord.m_row][coord.m_col] == MISSED ||
-				game[whichPlayer].m_gameGrid[1][coord.m_row][coord.m_col] == HIT)
+			shipHit =
+				game[!whichPlayer].m_gameGrid[0][coord.m_row][coord.m_col];
+			if (game[whichPlayer].m_gameGrid[1][coord.m_row][coord.m_col]
+				== MISSED ||
+				game[whichPlayer].m_gameGrid[1][coord.m_row][coord.m_col]
+				== HIT)
 			{
-				cout << "You have already shot at that space, please shoot again";
+				cout <<
+					"You have already shot at that space, please shoot again";
 				cin.get();
 				continue;
 			}
 
 			if (shipHit == NOSHIP)
 			{
-				game[whichPlayer].m_gameGrid[1][coord.m_row][coord.m_col] = MISSED;
+				game[whichPlayer].m_gameGrid[1][coord.m_row][coord.m_col]
+					= MISSED;
 				cout << "MISSED!" << endl;;
 				cin.get();
 			}
 			else
 			{
-				game[whichPlayer].m_gameGrid[1][coord.m_row][coord.m_col] = HIT;
+				game[whichPlayer].m_gameGrid[1][coord.m_row][coord.m_col]
+					= HIT;
 				cout << "HIT!" << endl;;
 
 				game[!whichPlayer].m_ships[shipHit].m_piecesLeft -= 1;
 				if (game[!whichPlayer].m_ships[shipHit].m_piecesLeft == 0)
 				{
-					cout << shipNames[shipHit] << " Has been Sunk!" << endl;;
+					cout << shipNames[shipHit] << " Has been Sunk!" << endl;
 
 				}
 				game[!whichPlayer].m_piecesLeft -= 1;

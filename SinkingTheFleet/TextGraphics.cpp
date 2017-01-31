@@ -8,35 +8,35 @@
 //----------------------------------------------------------------------------
 
 #include "textGraphics.h"
-//---------------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 // Function:	boxTop()
-// Title:	Box Top
+// Title:		Box Top
 // Description:
-//		draws a a line for the top of the box
+//				draws a a line for the top of the box
 // Programmer:	Paul Bladek
 // 
-// Date:	10/3/2006
+// Date:		10/3/2006
 //
-// Version:	1.01
+// Version:		1.01
 // 
 // Environment: Hardware: i3 
 //              Software: OS: Windows 7; 
 //              Compiles under Microsoft Visual C++ 2013
 //
-// Output:	Formatted line to sout
+// Output:		Formatted line to sout
 //
 // Called By:	header()
-//		endbox()
+//				endbox()
 //
 // Parameters:	sout: ostream&;		stream to print to
-//		ength: unsigned short;	length of the box
+//				length: unsigned short;	length of the box
 // 
-// Returns:	void
+// Returns:		void
 //
 // History Log:	
-//		10/3/2006	PB completed v 1.01
+//				10/3/2006	PB completed v 1.01
 //   
-//---------------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 void boxTop(ostream& sout, unsigned short length)
 {
 	if(length > MAX_LINE_LENGTH)
@@ -48,35 +48,35 @@ void boxTop(ostream& sout, unsigned short length)
 	sout << endl;
 }
 
-//---------------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 // Function:	boxBottom()
-// Title:	Box Bottom
+// Title:		Box Bottom
 // Description:
-//		draws a a line for the bottom of the box
+//				draws a a line for the bottom of the box
 // Programmer:	Paul Bladek
 // 
-// Date:	10/3/2006
+// Date:		10/3/2006
 //
-// Version:	1.01
+// Version:		1.01
 // 
 // Environment: Hardware: i3 
 //              Software: OS: Windows 7; 
 //              Compiles under Microsoft Visual C++ 2013
 //
-// Output:	Formatted line to sout
+// Output:		Formatted line to sout
 //
 // Called By:	header()
-//		endbox()
+//				endbox()
 //
 // Parameters:	sout: ostream&;		stream to print to
-//		ength: unsigned short;	length of the box
+//				length: unsigned short;	length of the box
 // 
 // Returns:		void
 //
 // History Log:	
-//		10/3/2006 PB completed v 1.01
+//				10/3/2006 PB completed v 1.01
 //   
-//---------------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 void boxBottom(ostream& sout, unsigned short length)
 {
 	if(length > MAX_LINE_LENGTH)
@@ -87,38 +87,38 @@ void boxBottom(ostream& sout, unsigned short length)
 	sout.put(LR);
 	sout << endl;
 }
-//---------------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 // Function:	boxLine()
-// Title:	Box Line
+// Title:		Box Line
 // Description:
-//		draws a a line of text aligned in the middle of the box
+//				draws a a line of text aligned in the middle of the box
 // Programmer:	Paul Bladek
 // 
-// Date:	10/3/2006
+// Date:		10/3/2006
 //
-// Version:	1.01
+// Version:		1.01
 // 
 // Environment: Hardware: i3 
 //              Software: OS: Windows 7; 
 //              Compiles under Microsoft Visual C++ 2012
 //
-// Output:	Formatted text to sout
+// Output:		Formatted text to sout
 //
 // Called By:	header()
-//		endbox()
+//				endbox()
 //
 // Parameters:	sout: ostream&;	stream to print to
-//		text: const string&; text to print
-//		length: unsigned short;	length of the box
-//		alignment: unsigned char;   'L' (left), 'C'(center),'R'(right)
-//		fillc: char; fill character
+//				text: const string&; text to print
+//				length: unsigned short;	length of the box
+//				alignment: unsigned char;   'L' (left), 'C'(center),'R'(right)
+//				fillc: char; fill character
 // 
-// Returns:	void
+// Returns:		void
 //
 // History Log:	
-//		10/3/2006 PB completed v 1.01
+//				10/3/2006 PB completed v 1.01
 //   
-//---------------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 void boxLine(ostream& sout, const string& text, unsigned short length,
 			 unsigned char alignment, char fillc)
 {
@@ -135,7 +135,7 @@ void boxLine(ostream& sout, const string& text, unsigned short length,
 		sout <<
 			setw((length + static_cast<streamsize>(text.length())) / 2 - 1)
 			<< text 
-			<< setw((length - static_cast<streamsize>(text.length())) / 2 - 1) 
+			<< setw((length - static_cast<streamsize>(text.length())) / 2 - 1)
 			<< fillc;
 		if(text.length() % 2 == 0)
 			sout << fillc; 

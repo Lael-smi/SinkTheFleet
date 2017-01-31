@@ -1,4 +1,4 @@
-//---------------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 // File:		textGraphics.h
 // 
 // Description: declarations for utilizing extended ASCII characters
@@ -8,7 +8,7 @@
 // Environment: Hardware: i3 
 //              Software: OS: Windows 7; 
 //              Compiles under Microsoft Visual C++ 2012
-//---------------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 #ifndef TEXTGRAPH_H
 #define TEXTGRAPH_H
 #include <iostream>

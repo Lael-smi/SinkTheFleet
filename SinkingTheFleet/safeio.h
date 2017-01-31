@@ -1,11 +1,11 @@
 #ifndef SAFEIO_H
 #define SAFEIO_H
-//---------------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 // File:		safeio.h
 //
 // Function:	template<class T>
 //				void safeRead(istream& sin, T& input, const char* prompt) 
-//---------------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 #include <iostream>
 #include <sstream>
 #include <iomanip>
@@ -18,7 +18,7 @@ template<class T>
 void safeRead(istream& sin, T& input, 
 	const char* prompt = "invalid input--please input a NUMBER: ");
 
-//---------------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 // Function:	template<class T>
 //				void safeRead(istream& sin, T& input, const char* prompt)
 //
@@ -53,7 +53,7 @@ void safeRead(istream& sin, T& input,
 //
 // History Log:
 //				5/1/06 PB completed version 1.0
-// ------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 template<class T>
 void safeRead(istream& sin, T& input, const char* prompt)
 {
